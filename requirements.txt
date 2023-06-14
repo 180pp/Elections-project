@@ -1,0 +1,12 @@
+matplotlib
+numpy
+pandas
+pingouin
+plotly
+plotly.express
+scikit-learn
+seaborn
+statsmodels
+streamlit
+streamlit-option-menu
+utils
