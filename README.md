@@ -3,7 +3,7 @@
 <h1 style='color: black;'>대통령 선거 데이터 분석</h1>
 <h2 style='color: gray;'>10 - 30대는 어떻게 움직였는가?</h2>
 [Streamlit 링크] (https://electionproject.streamlit.app/) <br/>
-[발표 PPT] (https://github.com/MaestroYongseok/Election_Project/blob/main/ppt/%EC%84%A0%EA%B1%B01.pdf) <br/>
+[발표 PPT] (https://github.com/180pp/Elections-project/blob/main/ppt/%EC%84%A0%EA%B1%B01.pdf) <br/>
 
 ## 1. 프로젝트 개요
 - 2020년 부터 2022년까지의 갤럽 리서치 조사 자료를 통해 대표정당 3곳에 대한 지지도 변화를 알아봄
