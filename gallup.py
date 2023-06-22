@@ -4,12 +4,23 @@ from streamlit_option_menu import option_menu
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-# 환경 설정
-plt.rc('font', family='S-Core Dream')
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 
 
 def run_gallup():
+    import matplotlib
+    import platform
+    # Window
+    if platform.system() == 'Windows':
+        matplotlib.rc('font', family='Malgun Gothic')
+    elif platform.system() == 'Darwin':  # Mac
+        matplotlib.rc('font', family='AppleGothic')
+    else:  # linux
+        matplotlib.rc('font', family='NanumGothic')
+    # 그래프에 마이너스 표시가 되도록 변경
+    matplotlib.rcParams['axes.unicode_minus'] = False
+
 
     st.markdown("# 데이터확인\n")
 
@@ -23,14 +34,28 @@ def run_gallup():
         "중도적": "중도"
     })
     df2 = df.groupby(['세대', '연도', '구분'])['비율'].agg('sum').reset_index()
-    st.dataframe(df2)
+    st.dataframe(df2, width=800)
+
+
+    st.write('')
+    st.write('')
+
+    st.write('')
+    st.write('')
 
     st.markdown("# 20대와 30대의 비율 차이\n"
                 "- 진보 지지 성향은 갈수록 줄어들고 있고, 반면에 보수는 계속 증가하고 있음\n"
                 "- 데이터 출처 : 사회통합실태조사 한국행정연구원(KOSIS)\n"
                 "- 데이터 보기 : https://kosis.kr/statHtml/statHtml.do?orgId=417&tblId=DT_417001_0030&conn_path=I3")
+
     df20s = df2[df2['세대'] == '19~29세']
     df30s = df2[df2['세대'] == '30~39세']
+
+    # 여기서 줄 띄우기
+    st.write('')
+    st.write('')
+    st.write('')
+    st.write('')
 
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -63,7 +88,86 @@ def run_gallup():
 
     custom_palette = ['#E61E2B', '#004EA1', '#FFED00', '#808080']
 
-    fig2, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(df2, x='date', y='10~20', hue='정당', palette=custom_palette)
-    ax.set_title("10-20대")
-    st.pyplot(fig2)
+    import datetime
+
+    start_date = st.date_input("기간")
+    end_date = st.date_input("")
+
+    start_datetime = pd.to_datetime(start_date)
+    end_datetime = pd.to_datetime(end_date)
+
+    filtered_df = df2[(df2["date"] >= start_datetime) & (df2["date"] <= end_datetime)]
+    graph_options = ["10~20대", "30대", "남자", "여자",'서울','인천/경기','대전/세종/충청','광주/전라','대구/경북','부산/울산/경남']
+    selected_graph = st.selectbox("요소별", graph_options)
+
+    if selected_graph == "10~20대":
+        st.markdown("# 10~20대")
+        fig2, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='10~20', hue='정당', palette=custom_palette)
+        ax.set_title("10-20대")
+        st.pyplot(fig2)
+
+    elif selected_graph == "30대":
+        st.markdown("# 30대")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='30대', hue='정당', palette=custom_palette)
+        ax.set_title("30대")
+        st.pyplot(fig)
+
+    elif selected_graph == "남자":
+        st.markdown("# 남자")
+        fig3, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='남자', hue='정당', palette=custom_palette)
+        ax.set_title("정당별 남자 지지도", size=22)
+        st.pyplot(fig3)
+
+    elif selected_graph == "여자":
+        st.markdown("# 여자")
+        fig4, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='여자', hue='정당', palette=custom_palette)
+        ax.set_title("정당별 여자 지지도", size=22)
+        st.pyplot(fig4)
+
+
+    elif selected_graph == '서울':
+        st.markdown("# 서울")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='서울', hue='정당', palette=custom_palette, ax=ax)
+        ax.set_title("서울")
+        st.pyplot(fig)
+
+    elif selected_graph == '인천/경기':
+        st.markdown("# 인천/경기")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='인천/경기', hue='정당', palette=custom_palette, ax=ax)
+        ax.set_title("인천/경기")
+        st.pyplot(fig)
+
+    elif selected_graph == '대전/세종/충청':
+        st.markdown("# 대전/세종/충청")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='대전/세종/충청', hue='정당', palette=custom_palette, ax=ax)
+        ax.set_title("대전/세종/충청")
+        st.pyplot(fig)
+
+    elif selected_graph == '광주/전라':
+        st.markdown("# 광주/전라")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='광주/전라', hue='정당', palette=custom_palette, ax=ax)
+        ax.set_title("광주/전라")
+        st.pyplot(fig)
+
+    elif selected_graph == '대구/경북':
+        st.markdown("# 대구/경북")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='대구/경북', hue='정당', palette=custom_palette, ax=ax)
+        ax.set_title("대구/경북")
+        st.pyplot(fig)
+
+    elif selected_graph == '부산/울산/경남':
+        st.markdown("# 부산/울산/경남")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.lineplot(data=filtered_df, x='date', y='부산/울산/경남', hue='정당', palette=custom_palette, ax=ax)
+        ax.set_title("부산/울산/경남")
+        st.pyplot(fig)
+

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-
+import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 import geopandas as gpd
@@ -43,4 +43,3 @@ def run_election():
 
     m = kr_sido.explore(column="선거인수", zoom_start=6, width=350, height=400)
     st_folium(m, width=700)
-
